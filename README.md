@@ -1,8 +1,5 @@
 # 🌿 GreenBasket – Sustainable E-Commerce for a Greener Tomorrow
 
-🔗 **GitHub Repo:** https://github.com/shahil8848/GreenBasket-Style-1-  
-🌍 **Live Site:** https://greenbasket-final.vercel.app/  
-👤 **LinkedIn:** https://www.linkedin.com/in/shahil-bhusal8848  
 
 ---
 
@@ -56,7 +53,7 @@ To get started, copy `.env.example` to `.env.local` and provide your own credent
 To run this project on your local machine:
 
 1. Clone the repository:  
-   `git clone https://github.com/shahil8848/GreenBasket-Style-1-.git`
+   `git clone https://github.com/shahil369/GreenBasket-esewa-and-stripe-.git
 
 2. Navigate to the project directory:  
    `cd GreenBasket-Style-1-`
