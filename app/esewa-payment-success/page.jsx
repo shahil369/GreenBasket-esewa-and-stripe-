@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAppContext } from '@/context/AppContext';
@@ -11,49 +12,30 @@ const EsewaSuccessPage = () => {
   const { getToken, setCartItems } = useAppContext();
 
   useEffect(() => {
-    const verifyPayment = async () => {
-      const oid = params.get('oid');
-      const amt = params.get('amt');
-      const refId = params.get('refId');
-      const pid = params.get('pid');
-      const orderId = params.get('orderId');
-
-      if (!oid || !amt || !refId || !pid || !orderId) {
-        toast.error('Invalid payment response.');
-        setCartItems({}); // ❗ clear cart even if params are invalid
-        return;
-      }
+    const verifyEsewa = async () => {
+      const data = {
+        amt: params.get("amt"),
+        rid: params.get("refId"),
+        pid: params.get("oid"),
+      };
 
       try {
-        const token = await getToken();
-        const { data } = await axios.post(
-          '/api/verify-esewa-payment',
-          { oid, amt, refId, pid, orderId },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        setCartItems({}); // ❗ always clear cart regardless of outcome
-
-        if (data.success) {
-          toast.success('Payment Verified');
-          router.replace('/my-orders');
-        } else {
-          toast.error(data.message || 'Payment Verification Failed');
-        }
-      } catch (error) {
-        setCartItems({}); // ❗ also clear on network or server error
-        toast.error('Something went wrong.');
+        const res = await axios.post("/api/esewa/verify", data, {
+          headers: { Authorization: await getToken() },
+        });
+        toast.success("Payment Verified Successfully 🎉");
+        setCartItems([]);
+        router.push("/my-orders");
+      } catch (err) {
+        toast.error("Payment Verification Failed");
+        router.push("/cart");
       }
     };
 
-    verifyPayment();
-  }, [params, getToken, router, setCartItems]);
+    if (params.get("refId")) verifyEsewa();
+  }, [params]);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-xl text-gray-700">Verifying your payment...</p>
-    </div>
-  );
+  return <div className="p-10 text-xl">Verifying Payment...</div>;
 };
 
 export default EsewaSuccessPage;
